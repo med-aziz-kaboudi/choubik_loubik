@@ -34,16 +34,12 @@ public class AfficherCat {
     private TableColumn<Category, Void> actionColumnCategorie;
 
     @FXML
-    private TableColumn<Category, String> imageColumnCategorie;
-
-    @FXML
     private TableColumn<Category, String> typeColumnCategorie;
     private final CategoryServices cs = new CategoryServices();
 
     @FXML
     void initialize() {
         typeColumnCategorie.setCellValueFactory(new PropertyValueFactory<>("type"));
-        imageColumnCategorie.setCellValueFactory(new PropertyValueFactory<>("image"));
         setupActionColumn();
         refreshCategoryList();
         // Ajouter un ChangeListener au champ de texte Rechercher
@@ -113,7 +109,7 @@ public class AfficherCat {
             }
         });
     }
-    //***************************************************************************************************************************
+
     private void deleteCategory(Category category) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");

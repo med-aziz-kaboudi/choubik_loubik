@@ -64,6 +64,18 @@ public class LivreurSignupController {
     @FXML
     private void handleSignup() {
         try {
+            if (txtNom.getText().isEmpty() ||
+                    txtPrenom.getText().isEmpty() ||
+                    txtEmail.getText().isEmpty() ||
+                    txtPassword.getText().isEmpty() ||
+                    cmbAdresse.getValue() == null ||
+                    cmbVehicule.getValue() == null ||
+                    cmbZoneLivraison.getValue() == null ||
+                    txtNumTel.getText().isEmpty()) {
+
+                lblStatus.setText("Please fill in all fields.");
+                return;
+            }
             int idVehicule = livreurService.findVehiculeIdByType(cmbVehicule.getValue());
             int idZoneLivraison = livreurService.findZoneLivraisonIdByName(cmbZoneLivraison.getValue());
             Livreur newLivreur = new Livreur(
@@ -90,6 +102,36 @@ public class LivreurSignupController {
         } catch (Exception e) {
             lblStatus.setText("Failed to redirect: " + e.getMessage());
         }
+    }
+    private String validateFields() {
+        StringBuilder errorMsg = new StringBuilder();
+
+        if (txtNom.getText().isEmpty()) {
+            errorMsg.append("Nom field is empty.\n");
+        }
+        if (txtPrenom.getText().isEmpty()) {
+            errorMsg.append("Prénom field is empty.\n");
+        }
+        if (txtEmail.getText().isEmpty()) {
+            errorMsg.append("Email field is empty.\n");
+        }
+        if (txtPassword.getText().isEmpty()) {
+            errorMsg.append("Password field is empty.\n");
+        }
+        if (cmbAdresse.getValue() == null || cmbAdresse.getValue().isEmpty()) {
+            errorMsg.append("Adresse field is empty.\n");
+        }
+        if (cmbVehicule.getValue() == null || cmbVehicule.getValue().isEmpty()) {
+            errorMsg.append("Type of Vehicle field is empty.\n");
+        }
+        if (cmbZoneLivraison.getValue() == null || cmbZoneLivraison.getValue().isEmpty()) {
+            errorMsg.append("Delivery Zone field is empty.\n");
+        }
+        if (txtNumTel.getText().isEmpty()) {
+            errorMsg.append("Phone Number field is empty.\n");
+        }
+
+        return errorMsg.toString();
     }
     private void redirectToLogin() {
         try {

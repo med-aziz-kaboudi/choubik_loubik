@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.TablePlatController"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <!-- Layout for the Ajouter Plat Button -->
+    <VBox alignment="TOP_LEFT" spacing="10" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10">
+        <Button text="Ajouter Plat" fx:id="addPlatButton" onAction="#handleAddPlatAction" />
+    </VBox>
+
+    <!-- Layout for the Logout Button -->
+    <VBox alignment="BOTTOM_LEFT" spacing="10" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10">
+        <Button text="Logout" fx:id="logoutButton" onAction="#handleLogoutAction" />
+        <Button fx:id="goBackButton" layoutX="526.0" layoutY="14.0" onAction="#handleGoBack" text="Go Back" />
+
+    </VBox>
+
+    <!-- TableView -->
+    <TableView fx:id="tableView" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="50" AnchorPane.bottomAnchor="50">
+        <columns>
+            <TableColumn text="Nom" fx:id="nomColumn">
+                <cellValueFactory><PropertyValueFactory property="nom" /></cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Category">
+                <cellValueFactory><PropertyValueFactory property="categoryName" /></cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Restaurant">
+                <cellValueFactory><PropertyValueFactory property="restaurantName" /></cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Description" fx:id="descriptionColumn">
+                <cellValueFactory><PropertyValueFactory property="description" /></cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Prix" fx:id="prixColumn">
+                <cellValueFactory><PropertyValueFactory property="prix" /></cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Image" fx:id="imageColumn">
+                <cellValueFactory><PropertyValueFactory property="image" /></cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="columnActions" text="Actions" prefWidth="150.0"/>
+
+        </columns>
+    </TableView>
+</AnchorPane>
