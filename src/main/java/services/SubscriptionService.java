@@ -5,6 +5,7 @@ import utils.MyDatabase;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
@@ -34,7 +35,7 @@ public class SubscriptionService {
             System.out.println("Subscription added successfully.");
         } catch (SQLException e) {
             System.err.println("SQL Exception: " + e.getMessage());
-            // Handle exceptions
+
         }
     }
     // In SubscriptionService.java
@@ -48,6 +49,35 @@ public class SubscriptionService {
         } catch (SQLException e) {
             System.err.println("SQL Exception: " + e.getMessage());
             // Handle exceptions
+        }
+    }
+    public boolean isSubscriptionValid(int gerantId, LocalDate offerEndDate) throws SQLException {
+        String sql = "SELECT date_fin FROM abonnement WHERE id_resto = ? AND status = 1 ORDER BY date_fin DESC LIMIT 1";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, gerantId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                LocalDate subscriptionEndDate = resultSet.getDate("date_fin").toLocalDate();
+                return !offerEndDate.isAfter(subscriptionEndDate);
+            } else {
+                throw new SQLException("No active subscription found for Gerant ID: " + gerantId);
+            }
+        }
+    }
+    public LocalDate getSubscriptionEndDate(int gerantId) throws SQLException {
+        String sql = "SELECT date_fin FROM abonnement WHERE id_resto = ? AND status = 1 ORDER BY date_fin DESC LIMIT 1";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, gerantId);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getDate("date_fin").toLocalDate();
+                } else {
+                    return null; // No active subscription found for this gerant.
+                }
+            }
         }
     }
 

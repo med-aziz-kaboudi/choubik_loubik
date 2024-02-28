@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+
+<?import java.net.URL?>
+<HBox fx:controller="controllers.SignUpClientController" xmlns:fx="http://javafx.com/fxml" spacing="20" alignment="CENTER">
+    <stylesheets>
+        <URL value="@styles/client.css" />
+    </stylesheets>
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+
+    <!-- Image Section -->
+    <VBox id="imageSection" alignment="CENTER" spacing="10" fillWidth="true" HBox.hgrow="ALWAYS">
+        <ImageView fx:id="myImageView" fitWidth="300" fitHeight="450" preserveRatio="false"/>
+    </VBox>
+
+    <!-- Form Section -->
+    <VBox id="formSection" fx:id="formVBox" styleClass="vbox-form" alignment="TOP_CENTER">
+        <Label text="Sign Up" styleClass="form-title"/>
+        <TextField fx:id="nomClient" promptText="Nom"/>
+        <Label fx:id="nomError" textFill="#802d18" styleClass="error-label"/>
+        <TextField fx:id="prenomClient" promptText="Prenom"/>
+        <Label fx:id="prenomError" textFill="red" styleClass="error-label"/>
+        <TextField fx:id="emailClient" promptText="Email"/>
+        <Label fx:id="emailError" textFill="red" styleClass="error-label"/>
+        <PasswordField fx:id="passwordClient" promptText="Password"/>
+        <Label fx:id="passwordError" textFill="red" styleClass="error-label"/>
+        <TextField fx:id="usernameClient" promptText="Username"/>
+        <Label fx:id="usernameError" textFill="red" styleClass="error-label"/>
+        <ComboBox fx:id="adresseClient" promptText="Adresse"/>
+        <Label fx:id="adresseError" textFill="red" styleClass="error-label"/>
+        <TextField fx:id="numTelClient" promptText="Numéro de Téléphone"/>
+        <Label fx:id="numTelError" textFill="red" styleClass="error-label"/>
+        <Button text="Sign Up as Client" onAction="#handleSignUpClient"/>
+        <Button fx:id="backButton" text="Back" onAction="#handleBackAction"/>
+    </VBox>
+</HBox>

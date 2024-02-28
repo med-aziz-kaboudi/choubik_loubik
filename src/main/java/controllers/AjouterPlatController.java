@@ -73,4 +73,18 @@ public class AjouterPlatController {
             actionStatus.setText("Error adding plat: " + e.getMessage());
         }
     }
+    @FXML
+    private void handleGoBack(ActionEvent event) {
+        try {
+            Parent adminHomePageParent = FXMLLoader.load(getClass().getResource("/TablePlat.fxml"));
+            Scene adminHomePageScene = new Scene(adminHomePageParent);
+
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            window.setScene(adminHomePageScene);
+            window.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

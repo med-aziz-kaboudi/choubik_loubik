@@ -7,6 +7,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import models.Livreur;
 import services.LivreurService;
@@ -19,7 +21,8 @@ import java.time.LocalDate;
 
 
 public class LivreurSignupController {
-
+    @FXML
+    private ImageView signupImage;
     @FXML
     private TextField txtNom;
     @FXML
@@ -48,6 +51,14 @@ public class LivreurSignupController {
         } catch (SQLException e) {
             e.printStackTrace();
             lblStatus.setText("Failed to load data: " + e.getMessage());
+        }
+        try {
+            Image image = new Image(getClass().getResourceAsStream("/images/food.jpg"));
+            signupImage.setImage(image);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error loading image.");
         }
     }
 

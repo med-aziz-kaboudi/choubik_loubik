@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.EditOfferController" spacing="10">
+    <TextField fx:id="txtPercentage" promptText="Percentage"/>
+    <TextField fx:id="txtNewPrice" promptText="New Price"/>
+    <TextField fx:id="txtStartDate" promptText="Start Date" editable="false"/>
+    <TextField fx:id="txtEndDate" promptText="End Date" editable="false"/>
+    <Button text="Save" onAction="#handleSave"/>
+    <Button text="Cancel" onAction="#handleCancel"/>
+</VBox>
+
