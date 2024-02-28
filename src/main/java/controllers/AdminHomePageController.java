@@ -56,6 +56,8 @@ public class AdminHomePageController {
     private UserService userService = new UserService();
     @FXML
     public void initialize() {
+        dashboardService = new DashboardService();
+
         try {
             Image logo = new Image(getClass().getResourceAsStream("/images/Choubikloubiik.png"));
             logoImage.setImage(logo);
@@ -71,11 +73,14 @@ public class AdminHomePageController {
         updateChart();
         updateIncomesCard();
         updateTotalUsersCard();
+        updateMonthlyDonations();
+
     }
     private void updateTotalUsersCard() {
         new Thread(() -> {
             try {
                 int totalUsers = dashboardService.fetchTotalUsers();
+                System.out.println("Total users: " + totalUsers);
                 Platform.runLater(() -> totalUsersLabel.setText(String.format("Total Users: %d", totalUsers)));
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -88,6 +93,9 @@ public class AdminHomePageController {
             double totalIncome = dashboardService.fetchTotalIncomeForCurrentMonth();
             double donations = totalIncome * 0.05;
             double netIncome = totalIncome - donations;
+            System.out.println("Full Income: " + totalIncome);
+            System.out.println("Donations: " + donations);
+            System.out.println("Net Income: " + netIncome);
 
             fullIncomeLabel.setText(String.format("Full Incomes: $%.2f", totalIncome));
             netIncomeLabel.setText(String.format("Net Incomes: $%.2f", netIncome));
@@ -167,6 +175,14 @@ public class AdminHomePageController {
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+    private void updateMonthlyDonations() {
+        try {
+            dashboardService.updateMonthlyDonations();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error updating monthly donations.");
         }
     }
 }

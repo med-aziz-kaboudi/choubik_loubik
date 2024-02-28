@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
@@ -10,9 +13,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.collections.FXCollections?>
-<?import java.lang.String?>
 <VBox prefHeight="400.0" prefWidth="600.0" stylesheets="@styles/dashboard.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AdminHomePageController">
 
     <HBox spacing="10">
@@ -31,7 +31,7 @@
             </VBox>
 
             <VBox prefHeight="186.0" prefWidth="94.0" styleClass="bottom-section" VBox.vgrow="ALWAYS">
-                <Label prefHeight="585.0" prefWidth="94.0" styleClass="text-style" text="Check Profile" onMouseClicked="#handleCheckProfileAction" />
+                <Label onMouseClicked="#handleCheckProfileAction" prefHeight="585.0" prefWidth="94.0" styleClass="text-style" text="Check Profile" />
                 <Label fx:id="logoutLabel" onMouseClicked="#handleLogoutAction" prefHeight="301.0" prefWidth="94.0" styleClass="text-style" text="Logout" />
             </VBox>
         </VBox>
@@ -45,11 +45,11 @@
                     <Label fx:id="fullIncomeLabel" text="Full Income: $" />
                     <Label fx:id="netIncomeLabel" text="Net Income: $" />
                 </VBox>
-                <VBox prefHeight="100" prefWidth="200" styleClass="card">
+                <VBox prefHeight="106.0" prefWidth="144.0" styleClass="card">
                     <Label text="Total Users" />
                     <Label fx:id="totalUsersLabel" text="Total Users: 0" />
                 </VBox>
-                <VBox prefHeight="100" prefWidth="200" styleClass="card">
+                <VBox prefHeight="100.0" prefWidth="158.0" styleClass="card">
                     <Label text="Donations" />
                     <Label fx:id="donationsLabel" text="Donations: $" />
                 </VBox>
@@ -59,19 +59,19 @@
             <ComboBox fx:id="timeIntervalComboBox" prefWidth="150">
                 <items>
                     <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="Days"/>
-                        <String fx:value="Weeks"/>
-                        <String fx:value="Months"/>
-                        <String fx:value="Years"/>
+                        <String fx:value="Days" />
+                        <String fx:value="Weeks" />
+                        <String fx:value="Months" />
+                        <String fx:value="Years" />
                     </FXCollections>
                 </items>
             </ComboBox>
             <LineChart fx:id="usersChart">
                 <xAxis>
-                    <CategoryAxis fx:id="xAxis"/>
+                    <CategoryAxis fx:id="xAxis" />
                 </xAxis>
                 <yAxis>
-                    <NumberAxis fx:id="yAxis"/>
+                    <NumberAxis fx:id="yAxis" />
                 </yAxis>
             </LineChart>
 
