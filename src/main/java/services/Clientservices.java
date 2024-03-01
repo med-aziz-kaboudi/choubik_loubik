@@ -66,6 +66,7 @@ public class Clientservices {
     }
 
 
+
     public Client getClientByUsernameOrEmail(String usernameOrEmail) {
         String query = "SELECT * FROM client WHERE username = ? OR email = ?";
         try (PreparedStatement pst = connection.prepareStatement(query)) {
@@ -90,6 +91,17 @@ public class Clientservices {
         }
         return null;
     }
+    public List<String> getCityNames() throws SQLException {
+        List<String> cities = new ArrayList<>();
+        String query = "SELECT city FROM cities";
+        try (PreparedStatement pst = connection.prepareStatement(query); ResultSet rs = pst.executeQuery()) {
+            while (rs.next()) {
+                cities.add(rs.getString("city"));
+            }
+        }
+        return cities;
+    }
+
 
 
 
@@ -148,5 +160,27 @@ public class Clientservices {
         }
         return clients;
     }
+    public Client getClientById(int id) throws SQLException {
+        String query = "SELECT * FROM client WHERE id = ?";
+        try (PreparedStatement pst = connection.prepareStatement(query)) {
+            pst.setInt(1, id);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                return new Client(
+                        rs.getInt("id"),
+                        rs.getString("nom"),
+                        rs.getString("prenom"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("username"),
+                        rs.getString("adresse"),
+                        rs.getInt("num_tel"),
+                        new java.util.Date(rs.getTimestamp("date").getTime()) // Adjust based on your Client constructor
+                );
+            }
+        }
+        return null;
+    }
+
 
 }

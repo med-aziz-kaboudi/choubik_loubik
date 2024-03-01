@@ -28,6 +28,10 @@ public class Gerant {
         this.cityId.set(cityId); // Set city ID
     }
 
+    public Gerant() {
+
+    }
+
     // Getters and setters for cityId
     public final void setCityId(int value) {
         cityId.set(value);
@@ -139,4 +143,5 @@ public class Gerant {
     public Timestamp getDate() { return date.get(); }
     public void setDate(Timestamp date) { this.date.set(date); }
     public ObjectProperty<Timestamp> dateProperty() { return date; }
+
 }

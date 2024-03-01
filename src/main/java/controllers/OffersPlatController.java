@@ -102,7 +102,11 @@ public class OffersPlatController {
             double percentage = Double.parseDouble(txtPercentage.getText());
             LocalDate startDate = dpDateDebut.getValue();
             LocalDate endDate = dpDateFin.getValue();
-
+            if (!subscriptionService.canCreateOffer(gerantId)) {
+                actionStatus.setText("You have reached the limit of offers for your subscription type.");
+                showAlert("Offer Limit Reached", "You cannot create more offers with your current subscription type.");
+                return;
+            }
             // Check if dates are entered
             if (startDate == null || endDate == null) {
                 actionStatus.setText("Please enter both start and end dates.");
@@ -161,5 +165,13 @@ public class OffersPlatController {
             e.printStackTrace();
         }
     }
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
 
 }

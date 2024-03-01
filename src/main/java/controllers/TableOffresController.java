@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import models.Offre;
 import services.OffreServices;
+import services.SubscriptionService;
 import utils.SessionManager;
 
 import java.io.IOException;
@@ -28,7 +29,11 @@ import java.util.Optional;
 public class TableOffresController {
     @FXML
     private VBox offersContainer;
+    @FXML
+    private Button addOfferButton;
+
     private OffreServices offreServices = new OffreServices();
+    private SubscriptionService subscriptionService = new SubscriptionService(); // Assuming SubscriptionService has the required methods
 
     @FXML
     private void handleAddOfferAction(ActionEvent event) {
@@ -46,7 +51,26 @@ public class TableOffresController {
     }
     public void initialize() {
         loadOffers();
+        updateAddOfferButtonStatus();
+
     }
+    private void updateAddOfferButtonStatus() {
+        int gerantId = SessionManager.getCurrentGerant().getId();
+        try {
+            if (!subscriptionService.canCreateOffer(gerantId)) {
+                addOfferButton.setDisable(true);
+                addOfferButton.setText("Offer Limit Reached"); // Update button text to show status
+            } else {
+                addOfferButton.setDisable(false);
+                addOfferButton.setText("Add Offer"); // Reset button text to default
+            }
+        } catch (SQLException e) {
+            showAlert("Database access error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
 
     private void loadOffers() {
         offersContainer.getChildren().clear();
@@ -55,7 +79,6 @@ public class TableOffresController {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         for (Offre offer : offers) {
-            System.out.println("Offer ID: " + offer.getId());
             VBox offerCard = new VBox(10);
             offerCard.setPadding(new Insets(15));
             offerCard.setStyle("-fx-border-style: solid inside; -fx-border-width: 2; -fx-border-insets: 5; -fx-border-radius: 5; -fx-border-color: blue;");
@@ -63,18 +86,62 @@ public class TableOffresController {
             Text offerDetails = new Text(String.format("Plat name: %s, Discount: %d%%, New Price: %.2f, Start: %s, End: %s",
                     offer.getPlatName(), offer.getPourcentage(), offer.getNew_price(), sdf.format(offer.getDate_debut()), sdf.format(offer.getDate_fin())));
 
-            // Create buttons
+            HBox buttonBox = new HBox(10);
             Button btnModifier = new Button("Modifier");
             Button btnSupprimer = new Button("Supprimer");
+            Button btnBooster = new Button("Boost");
 
-            // Handle button actions
+            final int offerId = offer.getId(); // Use final or effectively final variable inside lambda
+            final int subscriptionTypeId = getSubscriptionTypeIdForCurrentGerant();
+
+            btnBooster.setVisible(subscriptionTypeId == 2 || subscriptionTypeId == 3);
+            btnBooster.setDisable(!canBoostOfferWrapper(idResto, subscriptionTypeId));
+
+            btnBooster.setOnAction(event -> boostOfferWrapper(offerId, subscriptionTypeId));
             btnModifier.setOnAction(event -> handleModifyOffer(offer));
             btnSupprimer.setOnAction(event -> handleDeleteOffer(offer.getId()));
 
-            HBox buttonBox = new HBox(10, btnModifier, btnSupprimer); // Adjust spacing as needed
+            buttonBox.getChildren().addAll(btnModifier, btnSupprimer, btnBooster);
             offerCard.getChildren().addAll(offerDetails, buttonBox);
 
             offersContainer.getChildren().add(offerCard);
+        }
+    }
+
+    private boolean canBoostOfferWrapper(int gerantId, int subscriptionTypeId) {
+        try {
+            return offreServices.canBoostOffer(gerantId, subscriptionTypeId);
+        } catch (SQLException e) {
+            showAlert("Failed to check offer boost eligibility: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private void boostOfferWrapper(int offerId, int subscriptionTypeId) {
+        handleBoostOffer(offerId, subscriptionTypeId);
+    }
+
+    private int getSubscriptionTypeIdForCurrentGerant() {
+        try {
+            return subscriptionService.getSubscriptionTypeId(SessionManager.getCurrentGerant().getId());
+        } catch (SQLException e) {
+            showAlert("Database access error: " + e.getMessage());
+            e.printStackTrace();
+            return 0; // Default or error value
+        }
+    }
+
+
+    private void handleBoostOffer(int offerId, int subscriptionTypeId) {
+        int gerantId = SessionManager.getCurrentGerant().getId();
+        try {
+            offreServices.boostOffer(gerantId, offerId, subscriptionTypeId);
+            showAlert("Offer boosted successfully!");
+            loadOffers(); // Reload offers to update the UI
+        } catch (SQLException e) {
+            showAlert("Failed to boost offer: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

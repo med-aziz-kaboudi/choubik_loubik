@@ -5,6 +5,7 @@ import utils.MyDatabase;
 import utils.SessionManager;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,10 +21,10 @@ public class OffreServices {
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, idPlat);
             preparedStatement.setDouble(2, pourcentage);
-            preparedStatement.setFloat(3, (float) newPrice); // Cast double to float
+            preparedStatement.setFloat(3, (float) newPrice);
             preparedStatement.setDate(4, startDate);
             preparedStatement.setDate(5, endDate);
-            preparedStatement.setInt(6, idResto); // Add the id_resto (id of gerant) to the PreparedStatement
+            preparedStatement.setInt(6, idResto);
 
             int affectedRows = preparedStatement.executeUpdate();
             if (affectedRows == 0) {
@@ -88,7 +89,74 @@ public class OffreServices {
             throw e; // Re-throw the exception to handle it at the calling site
         }
     }
+    public void boostOffer(int gerantId, int offerId, int subscriptionTypeId) throws SQLException {
+        // Determine the boost end date based on the subscription type
+        LocalDate boostStartDate = LocalDate.now();
+        LocalDate boostEndDate = boostStartDate.plusDays(subscriptionTypeId == 2 ? 1 : 2); // 1 day for type 2, 2 days for type 3
 
+        // Check the current number of boosts
+        if (!canBoostOffer(gerantId, subscriptionTypeId)) {
+            throw new SQLException("Cannot boost offer. Boost limit reached for your subscription type.");
+        }
+
+        // Insert the boost record into the boost table
+        String sql = "INSERT INTO boost (id_resto, id_offre_plat, boost_start_date, boost_end_date, num_boost, sub_id) VALUES (?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, gerantId);
+            preparedStatement.setInt(2, offerId);
+            preparedStatement.setDate(3, java.sql.Date.valueOf(boostStartDate));
+            preparedStatement.setDate(4, java.sql.Date.valueOf(boostEndDate));
+            preparedStatement.setInt(5, getBoostCount(gerantId) + 1); // Increment the current boost count
+            preparedStatement.setInt(6, subscriptionTypeId);
+            preparedStatement.executeUpdate();
+        }
+    }
+
+    public boolean canBoostOffer(int gerantId, int subscriptionTypeId) throws SQLException {
+        int allowedBoosts = subscriptionTypeId == 2 ? 1 : (subscriptionTypeId == 3 ? 4 : 0);
+        int currentBoostCount = getBoostCount(gerantId);
+        return currentBoostCount < allowedBoosts;
+    }
+
+    private int getBoostCount(int gerantId) throws SQLException {
+        String sql = "SELECT num_boost FROM boost WHERE id_resto = ? ORDER BY boost_start_date DESC LIMIT 1";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, gerantId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("num_boost");
+                }
+            }
+        }
+        return 0;
+    }
+    public List<Offre> getBoostedOffers() {
+        List<Offre> offers = new ArrayList<>();
+        String sql = "SELECT o.id, o.pourcentage, o.date_debut, o.date_fin, o.id_resto, o.id_plat, o.new_price, p.nom AS plat_name " +
+                "FROM offre_resto o " +
+                "JOIN boost b ON o.id = b.id_offre_plat " +
+                "JOIN plat p ON o.id_plat = p.id_plat " +
+                "WHERE b.boost_start_date <= CURRENT_DATE " +
+                "AND b.boost_end_date >= CURRENT_DATE";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                double pourcentage = resultSet.getDouble("pourcentage");
+                Date dateDebut = resultSet.getDate("date_debut");
+                Date dateFin = resultSet.getDate("date_fin");
+                int idPlat = resultSet.getInt("id_plat");
+                double newPrice = resultSet.getDouble("new_price");
+                String platName = resultSet.getString("plat_name");
+
+                Offre offer = new Offre(id, pourcentage, dateDebut, dateFin, idPlat, newPrice, platName);
+                offers.add(offer);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return offers;
+    }
 
 
 

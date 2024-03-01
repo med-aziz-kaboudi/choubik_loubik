@@ -3,23 +3,26 @@ package models;
 import java.util.Date;
 
 public class Offre {
-    private int id, id_resto, id_plat;
+    private int id;
+    private int id_resto;
+    private int id_plat;
     private int pourcentage;
     private Date date_debut;
     private Date date_fin;
     private float new_price;
-
-    public float getNew_price() {
-        return new_price;
-    }
-
-    public void setNew_price(float new_price) {
-        this.new_price = new_price;
-    }
-
-
+    private String platName;
 
     public Offre() {
+    }
+
+    public Offre(int id, double pourcentage, Date dateDebut, Date dateFin, int idPlat, double newPrice, String platName) {
+        this.id = id;
+        this.pourcentage = (int) pourcentage;
+        this.date_debut = dateDebut;
+        this.date_fin = dateFin;
+        this.id_plat = idPlat;
+        this.new_price = (float) newPrice;
+        this.platName = platName;
     }
 
     public int getId() {
@@ -50,11 +53,13 @@ public class Offre {
         return pourcentage;
     }
 
-    public void setPourcentage(int percentage) {
-        this.pourcentage = percentage;
+    public void setPourcentage(int pourcentage) {
+        if (pourcentage >= 0 && pourcentage <= 100) {
+            this.pourcentage = pourcentage;
+        } else {
+            throw new IllegalArgumentException("Pourcentage must be between 0 and 100.");
+        }
     }
-
-
 
     public Date getDate_debut() {
         return date_debut;
@@ -72,18 +77,18 @@ public class Offre {
         this.date_fin = date_fin;
     }
 
-    @Override
-    public String toString() {
-        return "Offre{" +
-                "id=" + id +
-                ", id_resto=" + id_resto +
-                ", id_plat=" + id_plat +
-                ", percentage=" + pourcentage +
-                ", date_debut=" + date_debut +
-                ", date_fin=" + date_fin +
-                '}';
+    public float getNew_price() {
+        return new_price;
     }
-    private String platName ;
+
+    public void setNew_price(float new_price) {
+        if (new_price >= 0) {
+            this.new_price = new_price;
+        } else {
+            throw new IllegalArgumentException("New price must be positive.");
+        }
+    }
+
     public String getPlatName() {
         return platName;
     }
@@ -91,18 +96,22 @@ public class Offre {
     public void setPlatName(String platName) {
         this.platName = platName;
     }
+
     public float getOriginalPrice() {
         return new_price / (1 - (pourcentage / 100.0f));
     }
-    public Offre(int id, double pourcentage, Date dateDebut, Date dateFin, int idPlat, double newPrice , String platName) {
-        this.id = id;
-        this.pourcentage = (int) pourcentage;
-        this.date_debut = dateDebut;
-        this.date_fin = dateFin;
-        this.id_plat = idPlat;
-        this.new_price = (float) newPrice;
-        this.platName = platName;
+
+    @Override
+    public String toString() {
+        return "Offre{" +
+                "id=" + id +
+                ", id_resto=" + id_resto +
+                ", id_plat=" + id_plat +
+                ", pourcentage=" + pourcentage +
+                ", date_debut=" + date_debut +
+                ", date_fin=" + date_fin +
+                ", new_price=" + new_price +
+                ", platName='" + platName + '\'' +
+                '}';
     }
-
-
 }

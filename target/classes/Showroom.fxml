@@ -12,15 +12,11 @@
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
-    <!-- Top area for logo, search bar, and buttons -->
     <top>
         <HBox spacing="10" alignment="CENTER_LEFT">
-            <!-- Logo on the top left -->
             <ImageView fx:id="logoImageView" fitWidth="50" fitHeight="50"/>
 
-            <!-- Search bar in the middle -->
             <TextField HBox.hgrow="ALWAYS" promptText="Search...">
-                <!-- This makes the search bar expand to fill space -->
                 <HBox.margin>
                     <Insets left="10" right="10"/>
                 </HBox.margin>
@@ -32,6 +28,5 @@
             </HBox>
         </HBox>
     </top>
-    <!-- Rest of the BorderPane content can go here -->
-    <!-- Add center, left, right, bottom as needed -->
+
 </BorderPane>
