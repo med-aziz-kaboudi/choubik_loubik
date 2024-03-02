@@ -20,7 +20,7 @@
                         <MenuItem fx:id="Commandes" onAction="#openTableCommandes" text="Table Commandes" />
                         <MenuItem fx:id="reservations" onAction="#openTableCommandes" text="Table reservations" />
                         <MenuItem fx:id="tables" onAction="#openTableCommandes" text="les tables" />
-                        <MenuItem fx:id="category" onAction="#openTableCommandes" text="Table category" />
+                        <MenuItem fx:id="category" onAction="#openTablegerant" text="Table category" />
 
 
                     </items>

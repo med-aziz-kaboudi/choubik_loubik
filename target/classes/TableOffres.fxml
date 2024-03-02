@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.layout.AnchorPane?>
+
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+
 <?import javafx.scene.layout.VBox?>
 <?import javafx.geometry.Insets?>
-
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controllers.TableOffresController"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="Button" stylesheets="@styles/Offre.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TableOffresController">
     <children>
-        <Button fx:id="addOfferButton" text="Add Offer" layoutX="14.0" layoutY="14.0" onAction="#handleAddOfferAction"/>
-        <VBox fx:id="offersContainer" spacing="10" layoutX="14.0" layoutY="50.0" prefWidth="572.0" prefHeight="340.0">
+        <Button fx:id="addOfferButton" layoutX="14.0" layoutY="14.0" onAction="#handleAddOfferAction" text="Add Offer" />
+        <VBox fx:id="offersContainer" layoutX="14.0" layoutY="50.0" prefHeight="340.0" prefWidth="572.0" spacing="10">
             <padding>
-                <Insets top="10" right="10" bottom="10" left="10"/>
+                <Insets bottom="10" left="10" right="10" top="10" />
             </padding>
         </VBox>
     </children>

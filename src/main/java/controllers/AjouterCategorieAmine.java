@@ -4,6 +4,7 @@ package controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -34,10 +35,8 @@ public class AjouterCategorieAmine {
     @FXML
     private void BtnAjouterCat(MouseEvent event) {
         String categoryType = TypeCategoryField.getText();
-
-
         if (categoryType.isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Validation Error", "Category Type and Image are required.");
+            showAlert(Alert.AlertType.ERROR, "Validation Error", "Category Type is required.");
             return;
         }
 
@@ -47,28 +46,15 @@ public class AjouterCategorieAmine {
         try {
             cs.ajouter(category);
             showAlert(Alert.AlertType.INFORMATION, "Success", "Category added successfully.");
+
+            // Close the current window
+            ((Node) (event.getSource())).getScene().getWindow().hide();
+
         } catch (SQLException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Database Error", "Error adding category.");
         }
     }
-
-    @FXML
-    void consulterCategorie(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherCat.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Afficher Catégorie");
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error", "Error loading AfficherCat.fxml");
-        }
-    }
-
-
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
@@ -77,6 +63,7 @@ public class AjouterCategorieAmine {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
 
 
 }

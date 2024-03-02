@@ -22,7 +22,6 @@ public class DashboardRestaurantController {
     public ImageView logoImage;
 
 
-
     @FXML
     private void handleLogoutAction(MouseEvent event) {
         SessionManager.clearSession();
@@ -31,7 +30,7 @@ public class DashboardRestaurantController {
             Parent showroomParent = FXMLLoader.load(getClass().getResource("/Showroom.fxml"));
             Scene showroomScene = new Scene(showroomParent);
 
-            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(showroomScene);
             window.show();
         } catch (IOException e) {
@@ -42,19 +41,20 @@ public class DashboardRestaurantController {
     public void openTablePlat(ActionEvent event) {
         loadScene("TablePlat.fxml", event);
     }
+
     public void openTableOffres(ActionEvent event) {
         loadScene("TableOffres.fxml", event);
     }
+
     public void openTableCommandes(ActionEvent event) {
         loadScene("TableCommandes.fxml", event);
     }
 
 
-
     private void loadScene(String fxmlFile, ActionEvent event) {
         try {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/" + fxmlFile)));
-            Stage stage = (Stage) ((MenuItem)event.getSource()).getParentPopup().getOwnerWindow();
+            Stage stage = (Stage) ((MenuItem) event.getSource()).getParentPopup().getOwnerWindow();
             stage.setScene(new Scene(root));
             stage.show();
         } catch (Exception e) {
@@ -62,6 +62,7 @@ public class DashboardRestaurantController {
             System.out.println("Error loading FXML file: " + fxmlFile);
         }
     }
+
     @FXML
     public void initialize() {
         try {
@@ -70,5 +71,9 @@ public class DashboardRestaurantController {
         } catch (NullPointerException e) {
             System.out.println("Image not found");
         }
+    }
+
+    public void openTablegerant(ActionEvent event) {
+        loadScene("AfficherCat.fxml", event);
     }
 }
