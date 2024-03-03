@@ -1,5 +1,7 @@
 package services;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import models.Offre;
 import utils.MyDatabase;
 import utils.SessionManager;
@@ -151,6 +153,29 @@ public class OffreServices {
 
                 Offre offer = new Offre(id, pourcentage, dateDebut, dateFin, idPlat, newPrice, platName);
                 offers.add(offer);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return offers;
+    }
+
+    public List<Offre> getOffersByRestaurant(int restaurantId) {
+        List<Offre> offers = new ArrayList<>();
+        String sql = "SELECT * FROM offre_resto WHERE id_resto = ?";
+        try (PreparedStatement pst = connection.prepareStatement(sql)) {
+            pst.setInt(1, restaurantId);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                offers.add(new Offre(
+                        rs.getInt("id"),
+                        rs.getDouble("pourcentage"),
+                        rs.getDate("date_debut"),
+                        rs.getDate("date_fin"),
+                        rs.getInt("id_plat"),
+                        rs.getDouble("new_price"),
+                        rs.getString("nom_plat") // Assuming there is a 'nom_plat' field
+                ));
             }
         } catch (SQLException e) {
             e.printStackTrace();

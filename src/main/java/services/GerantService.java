@@ -237,6 +237,22 @@ public class GerantService implements IGerant {
         }
         return filteredGerants;
     }
+    public List<Gerant> getAllGerants() throws SQLException {
+        List<Gerant> gerants = new ArrayList<>();
+        String sql = "SELECT id, name, description, image FROM gerant";
+        try (PreparedStatement pst = connection.prepareStatement(sql); ResultSet rs = pst.executeQuery()) {
+            while (rs.next()) {
+                Gerant gerant = new Gerant();
+                gerant.setId(rs.getInt("id"));
+                gerant.setName(rs.getString("name"));
+                gerant.setDescription(rs.getString("description"));
+                gerant.setImage(rs.getString("image"));
+                gerants.add(gerant);
+            }
+        }
+        return gerants;
+    }
+
 
 
 

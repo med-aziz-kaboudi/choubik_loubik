@@ -33,6 +33,8 @@
             <items>
                 <MenuItem onAction="#handleProfileAction" text="Profile" />
                 <MenuItem onAction="#handleLogoutAction" text="Logout" />
+                <MenuItem onAction="#gotoreserve" text="reservation" />
+
             </items>
             <!-- Profile image -->
             <graphic>

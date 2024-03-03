@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.TableReservationGerantController"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <TableView fx:id="reservationTableView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columns>
+            <TableColumn fx:id="clientNameColumn" text="Client Name" />
+            <TableColumn fx:id="clientSurnameColumn" text="Client Surname" />
+            <TableColumn fx:id="tableNumberColumn" text="Table Number" />
+            <TableColumn fx:id="reservationDateColumn" text="Date of Reservation" />
+            <TableColumn fx:id="statusColumn" text="Status" />
+            <TableColumn fx:id="actionColumn" text="Actions" />
+        </columns>
+    </TableView>
+
+</AnchorPane>
+

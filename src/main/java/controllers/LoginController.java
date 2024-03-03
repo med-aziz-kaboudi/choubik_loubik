@@ -27,7 +27,8 @@ import java.sql.SQLException;
 import org.mindrot.jbcrypt.BCrypt;
 
 public class LoginController {
-
+    @FXML
+    private ImageView loginImage;
     @FXML private TextField usernameOrEmail;
     @FXML private PasswordField password;
     @FXML private Button loginButton;
@@ -37,11 +38,7 @@ public class LoginController {
     private LivreurService livreurService = new LivreurService();
     private GerantService gerantService = new GerantService();
 
-    @FXML private ImageView loginImage; // Reference to the ImageView in FXML
     public void initialize() {
-        // Load and set the image in the ImageView
-        Image image = new Image(getClass().getResourceAsStream("/images/food.jpg"));
-        loginImage.setImage(image);
     }
 
     @FXML

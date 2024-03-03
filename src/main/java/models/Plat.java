@@ -23,6 +23,8 @@ public class Plat {
         this.prix = prix;
         this.image = image;
     }
+
+
     public String getCategoryName() {
         return categoryName;
     }

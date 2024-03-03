@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -16,6 +17,7 @@ import javafx.stage.Stage;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
+import models.Client;
 import models.Gerant;
 import models.Offre;
 import services.GerantService;
@@ -118,6 +120,7 @@ public class ClientHomePageController {
         }
     }
 
+
     @FXML
     private void handleLogoutAction(ActionEvent event) {
         SessionManager.clearSession();
@@ -132,12 +135,44 @@ public class ClientHomePageController {
         }
     }
 
+    @FXML
+    private void gotoreserve(ActionEvent event) {
+        if (SessionManager.getCurrentClient() != null) {
+            switchScene("/reservationclient.fxml");
+        } else {
+            showAlert("Error", "No client is currently logged in.");
+        }
+    }
+
+    private void switchScene(String fxmlPath) {
+        try {
+            Parent parent = FXMLLoader.load(getClass().getResource(fxmlPath));
+            Scene scene = new Scene(parent);
+            Stage window = (Stage) profileMenu.getScene().getWindow();
+            window.setScene(scene);
+            window.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+
     private void loadRandomRestaurants() {
         try {
             List<Gerant> randomGerants = gerantService.getRandomGerants(3);
             restaurantsContainer.getChildren().clear();
             for (Gerant gerant : randomGerants) {
                 VBox gerantCard = createGerantCard(gerant);
+                // Set the onMouseClicked event for each card
+                gerantCard.setOnMouseClicked(event -> openRestaurantDetails(gerant));
                 restaurantsContainer.getChildren().add(gerantCard);
             }
         } catch (SQLException e) {
@@ -149,8 +184,28 @@ public class ClientHomePageController {
         VBox card = new VBox(5);
         Label nameLabel = new Label(gerant.getName());
         card.getChildren().add(nameLabel);
+
+        // Make the card clickable
+        card.setOnMouseClicked(event -> openRestaurantDetails(gerant));
+
         return card;
     }
+
+    private void openRestaurantDetails(Gerant gerant) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/RestaurantDetails.fxml"));
+            Parent root = loader.load();
+            RestaurantDetailsController controller = loader.getController();
+            controller.setGerant(gerant); // Assuming you have this method in your RestaurantDetailsController
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     @FXML
     private void handleViewAllRestaurants(ActionEvent event) {

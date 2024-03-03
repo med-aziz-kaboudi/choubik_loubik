@@ -27,6 +27,18 @@ public class Gerant {
         this.adresse.set(adresse);
         this.cityId.set(cityId); // Set city ID
     }
+    public Gerant(String name, String description, String image) {
+        this.name.set(name);
+        this.description.set(description);
+        this.image.set(image);
+    }
+    public Gerant(int id, String name, String description, String image) {
+        this.id.set(id);
+        this.name.set(name);
+        this.description.set(description);
+        this.image.set(image);
+    }
+
 
     public Gerant() {
 

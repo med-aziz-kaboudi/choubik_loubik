@@ -2,6 +2,8 @@ package services;
 
 
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import models.Category;
 import models.Gerant;
 import models.Plat;
@@ -150,9 +152,5 @@ public class PlatServices  {
         }
         return plats;
     }
-
-
-
-
 
 }

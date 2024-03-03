@@ -102,15 +102,6 @@ public class Clientservices {
         return cities;
     }
 
-
-
-
-
-
-
-
-
-
     public void modifier(Client client) throws SQLException {
         String req = "UPDATE client SET nom = ?, prenom = ?, email = ?, password = ?, username = ?, adresse = ?, num_tel = ?, date = ? WHERE id = ?";
         try (PreparedStatement pst = connection.prepareStatement(req)) {
@@ -166,21 +157,26 @@ public class Clientservices {
             pst.setInt(1, id);
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
-                return new Client(
-                        rs.getInt("id"),
-                        rs.getString("nom"),
-                        rs.getString("prenom"),
-                        rs.getString("email"),
-                        rs.getString("password"),
-                        rs.getString("username"),
-                        rs.getString("adresse"),
-                        rs.getInt("num_tel"),
-                        new java.util.Date(rs.getTimestamp("date").getTime()) // Adjust based on your Client constructor
-                );
+                return extractClientFromResultSet(rs);
             }
         }
         return null;
     }
+    private Client extractClientFromResultSet(ResultSet rs) throws SQLException {
+        return new Client(
+                rs.getInt("id"),
+                rs.getString("nom"),
+                rs.getString("prenom"),
+                rs.getString("email"),
+                rs.getString("password"),
+                rs.getString("username"),
+                rs.getString("adresse"),
+                rs.getInt("num_tel"),
+                new java.util.Date(rs.getTimestamp("date").getTime())
+        );
+    }
+
+
 
 
 }

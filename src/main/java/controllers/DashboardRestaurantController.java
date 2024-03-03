@@ -76,4 +76,12 @@ public class DashboardRestaurantController {
     public void openTablegerant(ActionEvent event) {
         loadScene("AfficherCat.fxml", event);
     }
+
+    public void openTableTable(ActionEvent event) {
+        loadScene("tableTable.fxml", event);
+    }
+    public void openTableReservation(ActionEvent event) {
+        loadScene("TableReservationGerant.fxml", event);
+    }
+
 }
