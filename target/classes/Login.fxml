@@ -11,6 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
+<?import javafx.scene.control.Hyperlink?>
 <AnchorPane prefHeight="603.0" prefWidth="1007.0" style="-fx-background-color: lightblue;" stylesheets="@styles/login.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LoginController">
     <children>
         <ImageView fitHeight="412.0" fitWidth="419.0" layoutY="191.0" pickOnBounds="true" preserveRatio="true">
@@ -44,4 +45,6 @@
         <String fx:value="error" />
         <String fx:value="label" />
     </styleClass>
+    <Hyperlink fx:id="resetPasswordLink" layoutX="640.0" layoutY="360.0" onAction="#handleResetPassword" text="Forgot Password?" />
+
 </AnchorPane>

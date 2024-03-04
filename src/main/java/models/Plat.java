@@ -142,4 +142,5 @@ public class Plat {
         this.id_category = id_category;
         // id_restaurant is not set here - you need to set it based on your application context
     }
+
 }

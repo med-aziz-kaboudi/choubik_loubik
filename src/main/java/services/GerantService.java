@@ -253,6 +253,21 @@ public class GerantService implements IGerant {
         return gerants;
     }
 
+    public List<Gerant> searchGerantsByName(String name) throws SQLException {
+        List<Gerant> gerants = new ArrayList<>();
+        String sql = "SELECT * FROM gerant WHERE name LIKE ?";
+        try (PreparedStatement pst = connection.prepareStatement(sql)) {
+            pst.setString(1, "%" + name + "%");
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                gerants.add(new Gerant(rs.getInt("id"), rs.getString("username"), rs.getString("name"),
+                        rs.getString("description"), rs.getString("document"), rs.getString("image"),
+                        rs.getString("email"), rs.getString("password"), rs.getTimestamp("date")));
+            }
+        }
+        return gerants;
+    }
+
 
 
 

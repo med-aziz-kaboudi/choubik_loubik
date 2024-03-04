@@ -1,13 +1,20 @@
 package controllers;
 
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import models.Reservation;
 import services.ReservationService;
 import utils.SessionManager;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
@@ -79,4 +86,21 @@ public class TableReservationGerantController {
         alert.setContentText(content);
         alert.showAndWait();
     }
+    @FXML
+    private void handleBackAction(ActionEvent event) {
+        try {
+            Parent gerantHomePageParent = FXMLLoader.load(getClass().getResource("/dashboard_restaurant.fxml"));
+            Scene gerantHomePageScene = new Scene(gerantHomePageParent);
+
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(gerantHomePageScene);
+            window.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
 }

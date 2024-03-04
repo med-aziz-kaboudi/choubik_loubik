@@ -17,14 +17,14 @@ import models.Admin;
 import models.Client;
 import models.Gerant;
 import models.Livreur;
-import services.Adminservices;
-import services.Clientservices;
-import services.GerantService;
+import services.*;
 import utils.SessionManager;
-import services.LivreurService;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import org.mindrot.jbcrypt.BCrypt;
+import utils.Mailing;
+
 
 public class LoginController {
     @FXML
@@ -187,6 +187,27 @@ public class LoginController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private void handleResetPassword(ActionEvent event) {
+        String email = usernameOrEmail.getText().trim();
+        if (email.isEmpty()) {
+            showError("Email field cannot be empty.");
+            return;
+        }
+
+        PasswordResetService passwordResetService = new PasswordResetService();
+        try {
+            if (passwordResetService.resetPassword(email)) {
+                showError("A new password has been sent to your email.");
+            } else {
+                showError("This email does not exist in our records.");
+            }
+        } catch (SQLException e) {
+            showError("An error occurred while resetting the password: " + e.getMessage());
+        }
+    }
+
 
 
 }

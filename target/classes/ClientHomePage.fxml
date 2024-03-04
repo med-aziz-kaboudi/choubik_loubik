@@ -33,8 +33,6 @@
             <items>
                 <MenuItem onAction="#handleProfileAction" text="Profile" />
                 <MenuItem onAction="#handleLogoutAction" text="Logout" />
-                <MenuItem onAction="#gotoreserve" text="reservation" />
-
             </items>
             <!-- Profile image -->
             <graphic>
@@ -42,6 +40,9 @@
             </graphic>
         </MenuButton>
     </HBox>
+    <VBox fx:id="searchResultsContainer" spacing="10">
+        <!-- This container will be used to display search results -->
+    </VBox>
 
     <!-- Rest of the layout -->
     <VBox spacing="10" AnchorPane.bottomAnchor="20" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="70">
@@ -50,8 +51,10 @@
                 <HBox fx:id="offersContainer" spacing="10" />
             </content>
         </ScrollPane>
-        <Hyperlink onAction="#handleViewAllRestaurants" text="Voir tous les restaurants" />
+        <Hyperlink fx:id="viewAllRestaurantsLink" onAction="#handleViewAllRestaurants" text="Voir tous les restaurants" styleClass="view-all-restaurants-link" />
         <HBox fx:id="restaurantsContainer" spacing="10" />
-    </VBox>
 
+        <!-- Add the searchResultsContainer VBox here -->
+
+    </VBox>
 </AnchorPane>

@@ -13,6 +13,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -20,6 +21,7 @@ import javafx.util.Duration;
 import models.Client;
 import models.Gerant;
 import models.Offre;
+import models.Plat;
 import services.GerantService;
 import services.OffreServices;
 import utils.SessionManager;
@@ -27,6 +29,8 @@ import utils.SessionManager;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import services.PlatServices;
+
 
 public class ClientHomePageController {
     @FXML
@@ -50,6 +54,9 @@ public class ClientHomePageController {
     @FXML
     private MenuButton profileMenu;
     @FXML
+    private VBox searchResultsContainer;
+    private PlatServices platServices = new PlatServices(); // Correct spelling
+    @FXML
     public void initialize() {
         boostedOffers = offreServices.getBoostedOffers();
         displayOffers();
@@ -63,6 +70,65 @@ public class ClientHomePageController {
 
         Image profilePic = new Image("images/Choubikloubiik.png");
         profileImage.setImage(profilePic);
+
+        searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.trim().isEmpty()) {
+                performSearch(newValue);
+            } else {
+                searchResultsContainer.getChildren().clear(); // Clear results when search bar is cleared
+            }
+        });
+
+    }
+    private void performSearch(String query) {
+        searchResultsContainer.getChildren().clear(); // Clear previous search results
+
+        try {
+            // Assuming you want to search for plats globally, not just for a specific gerant
+            List<Plat> plats = platServices.searchPlatsByName(query);
+            List<Gerant> gerants = gerantService.searchGerantsByName(query);
+
+            for (Plat plat : plats) {
+                VBox card = createSearchPlatCard(plat);
+                searchResultsContainer.getChildren().add(card);
+            }
+
+            for (Gerant gerant : gerants) {
+                VBox card = createSearchGerantCard(gerant);
+                searchResultsContainer.getChildren().add(card);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exception
+        }
+    }
+
+    private VBox createSearchPlatCard(Plat plat) {
+        // Create a card for plat search results
+        VBox card = new VBox(5); // Adjust spacing
+        card.getStyleClass().add("search-result-card");
+
+        // Use the getRestaurantName() to access the name of the restaurant
+        String platInfo = plat.getNom() + (plat.getRestaurantName() != null ? " - " + plat.getRestaurantName() : "");
+        Label nameLabel = new Label(platInfo);
+        nameLabel.getStyleClass().add("search-result-label"); // You might need to define this style class in your CSS
+
+
+        card.getChildren().add(nameLabel);
+
+        return card;
+    }
+
+
+    private VBox createSearchGerantCard(Gerant gerant) {
+        // Create a card for gerant search results
+        VBox card = new VBox(5); // Adjust spacing
+        card.getStyleClass().add("search-result-card");
+        Label nameLabel = new Label(gerant.getName());
+        // Add more details as needed
+        card.getChildren().add(nameLabel);
+
+        return card;
     }
 
     private void displayOffers() {
@@ -181,8 +247,10 @@ public class ClientHomePageController {
     }
 
     private VBox createGerantCard(Gerant gerant) {
-        VBox card = new VBox(5);
+        VBox card = new VBox(10); // Adjust spacing as needed
+        card.getStyleClass().add("gerant-card");
         Label nameLabel = new Label(gerant.getName());
+        nameLabel.getStyleClass().add("gerant-card-label"); // Apply CSS style for the label
         card.getChildren().add(nameLabel);
 
         // Make the card clickable
@@ -233,4 +301,8 @@ public class ClientHomePageController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private WebView mapView;
+
 }

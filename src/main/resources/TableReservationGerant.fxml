@@ -1,22 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="controllers.TableReservationGerantController"
-            prefHeight="400.0" prefWidth="600.0">
+            prefHeight="400.0" prefWidth="600.0"
+            stylesheets="@/styles/TableRestaurantGerant.css">
 
-    <TableView fx:id="reservationTableView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <Button fx:id="backButton" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="70.0" styleClass="back-button" text="Back" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" onAction="#handleBackAction" />
+
+    <TableView fx:id="reservationTableView" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="50.0">
         <columns>
-            <TableColumn fx:id="clientNameColumn" text="Client Name" />
-            <TableColumn fx:id="clientSurnameColumn" text="Client Surname" />
-            <TableColumn fx:id="tableNumberColumn" text="Table Number" />
-            <TableColumn fx:id="reservationDateColumn" text="Date of Reservation" />
-            <TableColumn fx:id="statusColumn" text="Status" />
-            <TableColumn fx:id="actionColumn" text="Actions" />
+            <TableColumn fx:id="clientNameColumn" text="Client Name" minWidth="100.0"/>
+            <TableColumn fx:id="clientSurnameColumn" text="Client Surname" minWidth="100.0"/>
+            <TableColumn fx:id="tableNumberColumn" text="Table Number" minWidth="90.0"/>
+            <TableColumn fx:id="reservationDateColumn" text="Date of Reservation" minWidth="150.0"/>
+            <TableColumn fx:id="statusColumn" text="Status" minWidth="80.0"/>
+            <TableColumn fx:id="actionColumn" text="Actions" minWidth="80.0"/>
         </columns>
+        <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+        </columnResizePolicy>
     </TableView>
 
 </AnchorPane>
-

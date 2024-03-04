@@ -153,4 +153,32 @@ public class PlatServices  {
         return plats;
     }
 
+    public List<Plat> searchPlatsByName(String name) throws SQLException {
+        List<Plat> plats = new ArrayList<>();
+        // Updated SQL query to join with category and restaurant (gerant) tables to fetch additional details
+        String sql = "SELECT p.*, c.type as categoryName, r.name as restaurantName " +
+                "FROM plat p " +
+                "INNER JOIN category c ON p.id_category = c.id " +
+                "INNER JOIN gerant r ON p.id_restaurant = r.id " +
+                "WHERE p.nom LIKE ?";
+        try (PreparedStatement pst = connection.prepareStatement(sql)) {
+            pst.setString(1, "%" + name + "%");
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                // Constructing Plat objects with all necessary details including category and restaurant names
+                Plat plat = new Plat(
+                        rs.getInt("id_plat"),
+                        rs.getString("nom"),
+                        rs.getString("categoryName"),
+                        rs.getString("restaurantName"),
+                        rs.getString("description"),
+                        rs.getFloat("prix"),
+                        rs.getString("image"));
+                plats.add(plat);
+            }
+        }
+        return plats;
+    }
+
+
 }
